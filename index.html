@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BODKA | Game Dev & Tools Specialist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -17,24 +17,231 @@
       --black: #000000;
       --border: rgba(64, 224, 208, 0.2);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-main); }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    header { padding: 2rem 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-    .logo-container { display: flex; align-items: center; gap: 12px; }
-    .logo-circle { width: 45px; height: 45px; border-radius: 50%; background: var(--cyan-main); border: 3px solid var(--black); outline: 2px solid var(--cyan-main); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.5rem; color: var(--black); }
-    .logo-text { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; }
-    nav a { color: var(--text-muted); text-decoration: none; margin-left: 2rem; font-weight: 600; }
-    nav a.active { color: var(--cyan-main); }
-    .hero { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; }
-    h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-    h1 span { color: var(--cyan-main); }
-    .btn-large { display: inline-flex; align-items: center; gap: 10px; background: var(--cyan-main); color: var(--black); padding: 1.2rem 2.5rem; font-size: 1.2rem; font-weight: 700; border-radius: 8px; text-decoration: none; width: fit-content; }
-    .contact-links { display: flex; gap: 1rem; margin-top: 1rem; }
-    .contact-btn { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.8rem 1.2rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      padding: 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--cyan-main);
+      border: 3px solid var(--black);
+      outline: 2px solid var(--cyan-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--black);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-main);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.3s;
+      font-weight: 600;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--cyan-main);
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 4rem 0;
+    }
+
+    .badge {
+      background: rgba(64, 224, 208, 0.1);
+      color: var(--cyan-main);
+      border: 1px solid var(--cyan-main);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 span {
+      color: var(--cyan-main);
+      text-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .btn-large {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--cyan-main);
+      color: var(--black);
+      padding: 1.2rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 25px var(--cyan-glow);
+    }
+
+    .btn-large:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 40px var(--cyan-main);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 4rem 0;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover {
+      border-color: var(--cyan-main);
+      transform: translateY(-5px);
+    }
+
+    .skill-icon {
+      font-size: 2.5rem;
+      color: var(--cyan-main);
+      margin-bottom: 1rem;
+    }
+
+    .skill-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .contact-section {
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      border-color: var(--cyan-main);
+      color: var(--cyan-main);
+      transform: translateY(-2px);
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
+  <canvas id="particles-canvas"></canvas>
+
   <div class="container">
     <header>
       <div class="logo-container">
@@ -46,20 +253,111 @@
         <a href="products.html">Products & Tools</a>
       </nav>
     </header>
+
     <section class="hero">
-      <h1>Accelerating <span>Game Development</span></h1>
-      <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 600px;">
-        Programujem hry a vyvíjam špeciálne nástroje pre Unity, Unreal Engine a VS Code, ktoré zrýchľujú vývoj nových hier.
+      <div class="badge">Independent Game & Tool Developer</div>
+      <h1>Accelerating <span>Game Development</span> Workflows</h1>
+      <p class="hero-desc">
+        I create games and engineer high-performance development tools designed for Unity, Unreal Engine, and VS Code. My mission is to streamline complex mechanics, speed up repetitive tasks, and eliminate workflow bottlenecks.
       </p>
-      <a href="products.html" class="btn-large"><i class="fa-solid fa-rocket"></i> Browse Game Dev Tools</a>
-    </section>
-    <section style="padding: 2rem 0;">
-      <h2>Kontaktujte ma</h2>
-      <div class="contact-links">
-        <a href="mailto:blejzr11@gmail.com" class="contact-btn"><i class="fa-solid fa-envelope" style="color: var(--cyan-main);"></i> blejzr11@gmail.com</a>
-        <a href="https://www.instagram.com/badkaediting/" target="_blank" class="contact-btn"><i class="fa-brands fa-instagram" style="color: var(--cyan-main);"></i> @badkaediting</a>
+
+      <div class="cta-container">
+        <a href="products.html" class="btn-large">
+          <i class="fa-solid fa-rocket"></i> Browse Game Dev Tools
+        </a>
       </div>
     </section>
+
+    <h2 style="font-size: 2rem; margin-top: 2rem;">Core Expertise</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <i class="fa-brands fa-unity skill-icon"></i>
+        <h3>Unity Engine</h3>
+        <p>Custom C# scripting, editor extensions, state machines, and optimization tools built to shorten iteration cycles.</p>
+      </div>
+
+      <div class="skill-card">
+        <i class="fa-solid fa-gamepad skill-icon"></i>
+        <h3>Unreal Engine</h3>
+        <p>Blueprint modules and C++ utilities focusing on system architecture, player movement, and camera control.</p>
+      </div>
+
+      <div class="skill-card">
+        <i class="fa-solid fa-code skill-icon"></i>
+        <h3>VS Code & Tooling</h3>
+        <p>Custom automation scripts, snippets, and productivity tools that integrate cleanly into your editor workspace.</p>
+      </div>
+    </div>
+
+    <section class="contact-section">
+      <h2>Get In Touch</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Have questions or need custom game dev solutions?</p>
+      
+      <div class="contact-links">
+        <a href="mailto:blejzr11@gmail.com" class="contact-btn">
+          <i class="fa-solid fa-envelope" style="color: var(--cyan-main);"></i> blejzr11@gmail.com
+        </a>
+        <a href="https://www.instagram.com/badkaediting/" target="_blank" rel="noopener noreferrer" class="contact-btn">
+          <i class="fa-brands fa-instagram" style="color: var(--cyan-main);"></i> @badkaediting
+        </a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-btn">
+          <i class="fa-brands fa-github" style="color: var(--cyan-main);"></i> GitHub Profile
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 BODKA. Built for GitHub Pages.</p>
+    </footer>
   </div>
+
+  <script>
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(64, 224, 208, 0.3)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 60; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 </body>
 </html>
