@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODKA | Game Dev Products & Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --bg-card: #12161f;
+      --cyan-main: #40e0d0;
+      --cyan-glow: rgba(64, 224, 208, 0.4);
+      --text-main: #e6f1ff;
+      --text-muted: #8892b0;
+      --black: #000000;
+      --border: rgba(64, 224, 208, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    header {
+      padding: 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--cyan-main);
+      border: 3px solid var(--black);
+      outline: 2px solid var(--cyan-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--black);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-main);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.3s;
+      font-weight: 600;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--cyan-main);
+    }
+
+    .title-section {
+      padding: 3rem 0 1rem 0;
+    }
+
+    .title-section h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .title-section h1 span {
+      color: var(--cyan-main);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0 5rem 0;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--cyan-main);
+      box-shadow: 0 5px 20px rgba(64, 224, 208, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(64, 224, 208, 0.1);
+      color: var(--cyan-main);
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .buy-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--cyan-main);
+      color: var(--cyan-main);
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .buy-btn:hover {
+      background: var(--cyan-main);
+      color: var(--black);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-links a {
+      color: var(--cyan-main);
+      text-decoration: none;
+      margin-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <div class="logo-circle">B</div>
+        <div class="logo-text">BODKA</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products & Tools</a>
+      </nav>
+    </header>
+
+    <div class="title-section">
+      <h1>Game Dev <span>Tools & Modules</span></h1>
+      <p style="color: var(--text-muted);">Ready-to-use packages to speed up your game production.</p>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div>
+          <span class="tag">UNITY / C#</span>
+          <h3 class="product-title">Smooth Cam Pro</h3>
+          <p class="product-desc">Advanced 3D & 2D camera controller script with built-in collision damping, target tracking, and customizable shake effects.</p>
+        </div>
+        <button class="buy-btn" onclick="alert('Contact via Instagram @badkaediting or Email blejzr11@gmail.com to purchase!')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+
+      <div class="product-card">
+        <div>
+          <span class="tag">UNREAL / C++</span>
+          <h3 class="product-title">Fast State Machine</h3>
+          <p class="product-desc">Lightweight visual state machine framework for character animation states and enemy AI behaviors.</p>
+        </div>
+        <button class="buy-btn" onclick="alert('Contact via Instagram @badkaediting or Email blejzr11@gmail.com to purchase!')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+
+      <div class="product-card">
+        <div>
+          <span class="tag">VS CODE</span>
+          <h3 class="product-title">GameDev Snippets Pack</h3>
+          <p class="product-desc">Essential C# and C++ code snippets specifically tailored for fast game loop setup, vector math, and debugging.</p>
+        </div>
+        <button class="buy-btn" onclick="alert('Contact via Instagram @badkaediting or Email blejzr11@gmail.com to purchase!')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 BODKA. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="mailto:blejzr11@gmail.com"><i class="fa-solid fa-envelope"></i> blejzr11@gmail.com</a>
+        <a href="https://www.instagram.com/badkaediting/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> @badkaediting</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
