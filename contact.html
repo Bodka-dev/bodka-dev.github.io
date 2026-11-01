@@ -1,16 +1,305 @@
-<script>
-    const canvas = document.getElementById('particles-canvas') || document.createElement('canvas');
-    if (!document.getElementById('particles-canvas')) {
-      canvas.id = 'particles-canvas';
-      canvas.style.position = 'fixed';
-      canvas.style.top = '0';
-      canvas.style.left = '0';
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      canvas.style.zIndex = '0';
-      canvas.style.pointerEvents = 'none';
-      document.body.prepend(canvas);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODKA | Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --bg-card: #12161f;
+      --cyan-main: #40e0d0;
+      --cyan-glow: rgba(64, 224, 208, 0.4);
+      --text-main: #e6f1ff;
+      --text-muted: #8892b0;
+      --black: #000000;
+      --border: rgba(64, 224, 208, 0.2);
     }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      padding: 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--cyan-main);
+      border: 3px solid var(--black);
+      outline: 2px solid var(--cyan-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--black);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--cyan-main);
+    }
+
+    .contact-container {
+      margin: 3rem 0;
+      background: rgba(18, 22, 31, 0.9);
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 span {
+      color: var(--cyan-main);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: rgba(10, 12, 16, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    select option {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan-main);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--cyan-main);
+      color: var(--black);
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--cyan-main);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      justify-content: center;
+    }
+
+    .social-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .social-link:hover {
+      color: var(--cyan-main);
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <div class="logo-circle">B</div>
+        <div class="logo-text">BODKA</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products & Tools</a>
+        <a href="contact.html" class="active">Contact Me</a>
+      </nav>
+    </header>
+
+    <div class="contact-container">
+      <h1>Get in <span>Touch</span></h1>
+      <p class="subtitle">Select the topic of your message and send me a direct email.</p>
+
+      <form id="contactForm" action="https://formspree.io/f/mwllrjpd" method="POST">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" name="_replyto" placeholder="your@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Topic / Purpose</label>
+          <select id="subject" name="subject" required>
+            <option value="cooperation">🤝 Cooperation / Collaboration</option>
+            <option value="feedback" selected>💬 Feedback / Bug Report</option>
+            <option value="other">✉️ Something Else</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+
+      <div class="social-links">
+        <a href="https://www.instagram.com/badkaediting/" target="_blank" rel="noopener noreferrer" class="social-link">
+          <i class="fa-brands fa-instagram" style="color: var(--cyan-main);"></i> @badkaediting
+        </a>
+        <a href="mailto:blejzr11@gmail.com" class="social-link">
+          <i class="fa-solid fa-envelope" style="color: var(--cyan-main);"></i> blejzr11@gmail.com
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 BODKA. Built for GitHub Pages.</p>
+  </footer>
+
+  <script>
+    // Prepínanie Formspree endpointu
+    const form = document.getElementById('contactForm');
+    const subjectSelect = document.getElementById('subject');
+    const feedbackEndpoint = "https://formspree.io/f/mwllrjpd";
+    const cooperationEndpoint = "https://formspree.io/f/mrppydbn";
+
+    subjectSelect.addEventListener('change', function() {
+      if (this.value === 'cooperation') {
+        form.action = cooperationEndpoint;
+      } else {
+        form.action = feedbackEndpoint;
+      }
+    });
+
+    // Animácia rotujúcej 3D zemegule z bodiek
+    const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
     function resize() {
@@ -20,10 +309,9 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Generovanie bodiek na povrchu gule (zemegula)
     const globeDots = [];
-    const numDots = 150;
-    const radius = 180;
+    const numDots = 160;
+    const radius = 190;
 
     for (let i = 0; i < numDots; i++) {
       const phi = Math.acos(-1 + (2 * i) / numDots);
@@ -42,16 +330,14 @@
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
 
-      angle += 0.008; // Rýchlosť otáčania
+      angle += 0.006;
 
       globeDots.forEach(dot => {
-        // Rotácia okolo Y osi
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
         const xRot = dot.x * cos - dot.z * sin;
         const zRot = dot.z * cos + dot.x * sin;
 
-        // Projekcia na 2D obrazovku
         const scale = 400 / (400 + zRot);
         const x2d = xRot * scale + centerX;
         const y2d = dot.y * scale + centerY;
@@ -60,7 +346,7 @@
 
         ctx.fillStyle = `rgba(64, 224, 208, ${alpha})`;
         ctx.beginPath();
-        ctx.arc(x2d, y2d, scale * 2, 0, Math.PI * 2);
+        ctx.arc(x2d, y2d, scale * 2.2, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -68,3 +354,5 @@
     }
     animateGlobe();
   </script>
+</body>
+</html>
