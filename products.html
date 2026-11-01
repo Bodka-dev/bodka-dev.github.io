@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BODKA | Game Dev Products & Tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <title>BODKA | Products & Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -29,12 +29,16 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 2rem;
+      width: 100%;
+      flex: 1;
     }
 
     header {
@@ -86,24 +90,21 @@
       color: var(--cyan-main);
     }
 
-    .title-section {
-      padding: 3rem 0 1rem 0;
+    .section-title {
+      font-size: 2.5rem;
+      margin: 3rem 0 1.5rem 0;
     }
 
-    .title-section h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .title-section h1 span {
+    .section-title span {
       color: var(--cyan-main);
+      text-shadow: 0 0 20px var(--cyan-glow);
     }
 
-    .product-grid {
+    .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
-      margin: 3rem 0 5rem 0;
+      margin-bottom: 4rem;
     }
 
     .product-card {
@@ -119,19 +120,20 @@
 
     .product-card:hover {
       border-color: var(--cyan-main);
-      box-shadow: 0 5px 20px rgba(64, 224, 208, 0.15);
-      transform: translateY(-4px);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .tag {
-      display: inline-block;
       background: rgba(64, 224, 208, 0.1);
       color: var(--cyan-main);
+      border: 1px solid var(--cyan-main);
       padding: 0.3rem 0.8rem;
-      border-radius: 4px;
+      border-radius: 20px;
       font-size: 0.8rem;
-      font-weight: 600;
+      align-self: flex-start;
       margin-bottom: 1rem;
+      font-weight: 600;
     }
 
     .product-title {
@@ -142,46 +144,41 @@
     .product-desc {
       color: var(--text-muted);
       font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      flex-grow: 1;
     }
 
     .buy-btn {
       width: 100%;
-      background: transparent;
-      border: 1px solid var(--cyan-main);
-      color: var(--cyan-main);
-      padding: 0.8rem;
-      border-radius: 6px;
+      background: var(--cyan-main);
+      color: var(--black);
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
       font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px var(--cyan-glow);
     }
 
     .buy-btn:hover {
-      background: var(--cyan-main);
-      color: var(--black);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--cyan-main);
     }
 
     footer {
       padding: 2rem 0;
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
       color: var(--text-muted);
       font-size: 0.9rem;
-    }
-
-    .footer-links a {
-      color: var(--cyan-main);
-      text-decoration: none;
-      margin-left: 1.5rem;
     }
   </style>
 </head>
@@ -195,56 +192,41 @@
       <nav>
         <a href="index.html">Home</a>
         <a href="products.html" class="active">Products & Tools</a>
+        <a href="contact.html">Contact Me</a>
       </nav>
     </header>
 
-    <div class="title-section">
-      <h1>Game Dev <span>Tools & Modules</span></h1>
-      <p style="color: var(--text-muted);">Ready-to-use packages to speed up your game production.</p>
-    </div>
+    <h1 class="section-title">Game Dev <span>Tools & Assets</span></h1>
 
-    <div class="product-grid">
-      <div class="product-card">
-        <div>
-          <span class="tag">UNITY / C#</span>
-          <h3 class="product-title">Smooth Cam Pro</h3>
-          <p class="product-desc">Advanced 3D & 2D camera controller script with built-in collision damping, target tracking, and customizable shake effects.</p>
-        </div>
-        <button class="buy-btn" onclick="window.open('https://bodka-dev.itch.io/', '_blank')">
-          <i class="fa-solid fa-cart-shopping"></i> Get Tool
-        </button>
-      </div>
-
-      <div class="product-card">
-        <div>
-          <span class="tag">UNREAL / C++</span>
-          <h3 class="product-title">Fast State Machine</h3>
-          <p class="product-desc">Lightweight visual state machine framework for character animation states and enemy AI behaviors.</p>
-        </div>
-        <button class="buy-btn" onclick="window.open('https://bodka-dev.itch.io/', '_blank')">
-          <i class="fa-solid fa-cart-shopping"></i> Get Tool
-        </button>
-      </div>
-
+    <div class="products-grid">
+      <!-- Produkt 1 -->
       <div class="product-card">
         <div>
           <span class="tag">VS CODE</span>
           <h3 class="product-title">GameDev Snippets Pack</h3>
           <p class="product-desc">Essential C# and C++ code snippets specifically tailored for fast game loop setup, vector math, and debugging.</p>
         </div>
-        <button class="buy-btn" onclick="window.open('https://bodka-dev.itch.io/', '_blank')">
+        <button class="buy-btn" onclick="window.open('https://TVOJ_ITCH_IO_ODKAZ_1', '_blank')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+
+      <!-- Produkt 2 (Môžeš pridať ďalšie) -->
+      <div class="product-card">
+        <div>
+          <span class="tag">UNITY / UNREAL</span>
+          <h3 class="product-title">Workflow Automation Script</h3>
+          <p class="product-desc">Streamline your asset importing and scene building processes with custom editor extensions.</p>
+        </div>
+        <button class="buy-btn" onclick="window.open('https://TVOJ_ITCH_IO_ODKAZ_2', '_blank')">
           <i class="fa-solid fa-cart-shopping"></i> Get Tool
         </button>
       </div>
     </div>
-
-    <footer>
-      <p>&copy; 2026 BODKA. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="mailto:blejzr11@gmail.com"><i class="fa-solid fa-envelope"></i> blejzr11@gmail.com</a>
-        <a href="https://www.instagram.com/bodkadev/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> @bodkadev</a>
-      </div>
-    </footer>
   </div>
+
+  <footer>
+    <p>&copy; 2026 BODKA. Built for GitHub Pages.</p>
+  </footer>
 </body>
 </html>
