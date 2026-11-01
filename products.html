@@ -1,16 +1,251 @@
-<script>
-    const canvas = document.getElementById('particles-canvas') || document.createElement('canvas');
-    if (!document.getElementById('particles-canvas')) {
-      canvas.id = 'particles-canvas';
-      canvas.style.position = 'fixed';
-      canvas.style.top = '0';
-      canvas.style.left = '0';
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      canvas.style.zIndex = '0';
-      canvas.style.pointerEvents = 'none';
-      document.body.prepend(canvas);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODKA | Products & Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --bg-card: #12161f;
+      --cyan-main: #40e0d0;
+      --cyan-glow: rgba(64, 224, 208, 0.4);
+      --text-main: #e6f1ff;
+      --text-muted: #8892b0;
+      --black: #000000;
+      --border: rgba(64, 224, 208, 0.2);
     }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      padding: 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--cyan-main);
+      border: 3px solid var(--black);
+      outline: 2px solid var(--cyan-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--black);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-main);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.3s;
+      font-weight: 600;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--cyan-main);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin: 3rem 0 1.5rem 0;
+    }
+
+    .section-title span {
+      color: var(--cyan-main);
+      text-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--cyan-main);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .tag {
+      background: rgba(64, 224, 208, 0.1);
+      color: var(--cyan-main);
+      border: 1px solid var(--cyan-main);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      align-self: flex-start;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .buy-btn {
+      width: 100%;
+      background: var(--cyan-main);
+      color: var(--black);
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--cyan-main);
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <div class="logo-circle">B</div>
+        <div class="logo-text">BODKA</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products & Tools</a>
+        <a href="contact.html">Contact Me</a>
+      </nav>
+    </header>
+
+    <h1 class="section-title">Game Dev <span>Tools & Assets</span></h1>
+
+    <div class="products-grid">
+      <!-- Produkt 1 -->
+      <div class="product-card">
+        <div>
+          <span class="tag">VS CODE</span>
+          <h3 class="product-title">GameDev Snippets Pack</h3>
+          <p class="product-desc">Essential C# and C++ code snippets specifically tailored for fast game loop setup, vector math, and debugging.</p>
+        </div>
+        <button class="buy-btn" onclick="window.open('https://TVOJ_ITCH_IO_ODKAZ_1', '_blank')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+
+      <!-- Produkt 2 -->
+      <div class="product-card">
+        <div>
+          <span class="tag">UNITY / UNREAL</span>
+          <h3 class="product-title">Workflow Automation Script</h3>
+          <p class="product-desc">Streamline your asset importing and scene building processes with custom editor extensions.</p>
+        </div>
+        <button class="buy-btn" onclick="window.open('https://TVOJ_ITCH_IO_ODKAZ_2', '_blank')">
+          <i class="fa-solid fa-cart-shopping"></i> Get Tool
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 BODKA. Built for GitHub Pages.</p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
     function resize() {
@@ -27,14 +262,13 @@
     }
 
     function animateMatrix() {
-      ctx.fillStyle = 'rgba(10, 12, 16, 0.15)'; // Efekt jemného rozostrenia stopy
+      ctx.fillStyle = 'rgba(10, 12, 16, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = 'rgba(64, 224, 208, 0.4)';
       ctx.font = '14px monospace';
 
       for (let i = 0; i < drops.length; i++) {
-        // Vykreslíme bodku alebo štvorček pripomínajúci fragment kódu/systému
         const text = Math.random() > 0.5 ? '•' : '+';
         ctx.fillText(text, i * 30, drops[i] * 20);
 
@@ -47,3 +281,5 @@
     }
     animateMatrix();
   </script>
+</body>
+</html>
