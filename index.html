@@ -202,32 +202,28 @@
     .contact-section {
       padding: 5rem 0;
       border-top: 1px solid var(--border);
+      text-align: center;
     }
 
-    .contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
+    .contact-btn-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--cyan-main);
+      color: var(--black);
+      padding: 1.2rem 3rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-decoration: none;
+      box-shadow: 0 0 20px var(--cyan-glow);
+      transition: all 0.3s ease;
       margin-top: 2rem;
     }
 
-    .contact-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-card);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 0.8rem 1.5rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .contact-btn:hover {
-      border-color: var(--cyan-main);
-      color: var(--cyan-main);
-      transform: translateY(-2px);
+    .contact-btn-main:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px var(--cyan-main);
     }
 
     footer {
@@ -251,6 +247,7 @@
       <nav>
         <a href="index.html" class="active">Home</a>
         <a href="products.html">Products & Tools</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </header>
 
@@ -290,20 +287,12 @@
     </div>
 
     <section class="contact-section">
-      <h2>Get In Touch</h2>
-      <p style="color: var(--text-muted); margin-top: 0.5rem;">Have questions or need custom game dev solutions?</p>
+      <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Get In Touch</h2>
+      <p style="color: var(--text-muted); font-size: 1.1rem;">Have questions or need custom game dev solutions?</p>
       
-      <div class="contact-links">
-        <a href="mailto:blejzr11@gmail.com" class="contact-btn">
-          <i class="fa-solid fa-envelope" style="color: var(--cyan-main);"></i> blejzr11@gmail.com
-        </a>
-        <a href="https://www.instagram.com/bodkadev/" target="_blank" rel="noopener noreferrer" class="contact-btn">
-          <i class="fa-brands fa-instagram" style="color: var(--cyan-main);"></i> @bodkadev
-        </a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-btn">
-          <i class="fa-brands fa-github" style="color: var(--cyan-main);"></i> GitHub Profile
-        </a>
-      </div>
+      <a href="contact.html" class="contact-btn-main">
+        <i class="fa-solid fa-paper-plane"></i> Contact Me
+      </a>
     </section>
 
     <footer>
