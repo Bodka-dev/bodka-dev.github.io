@@ -222,7 +222,8 @@
       <h1>Get in <span>Touch</span></h1>
       <p class="subtitle">Select the topic of your message and send me a direct email.</p>
 
-      <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+      <!-- Formulár s dynamickým prepínaním cieľa podľa výberu -->
+      <form id="contactForm" action="https://formspree.io/f/mwllrjpd" method="POST">
         <div class="form-group">
           <label for="name">Your Name</label>
           <input type="text" id="name" name="name" placeholder="John Doe" required>
@@ -236,9 +237,9 @@
         <div class="form-group">
           <label for="subject">Topic / Purpose</label>
           <select id="subject" name="subject" required>
-            <option value="Cooperation / Collaboration">🤝 Cooperation / Collaboration</option>
-            <option value="Feedback / Bug Report">💬 Feedback / Suggestion</option>
-            <option value="Something Else">✉️ Something Else</option>
+            <option value="cooperation">🤝 Cooperation / Collaboration</option>
+            <option value="feedback" selected>💬 Feedback / Bug Report</option>
+            <option value="other">✉️ Something Else</option>
           </select>
         </div>
 
@@ -251,6 +252,24 @@
           <i class="fa-solid fa-paper-plane"></i> Send Message
         </button>
       </form>
+
+      <script>
+        // JavaScript, ktorý automaticky presmeruje správu na správny formspree endpoint
+        const form = document.getElementById('contactForm');
+        const subjectSelect = document.getElementById('subject');
+
+        // Tvoje endpointy z Formspree
+        const feedbackEndpoint = "https://formspree.io/f/mwllrjpd"; //
+        const cooperationEndpoint = "https://formspree.io/f/mrppydbn"; //
+
+        subjectSelect.addEventListener('change', function() {
+          if (this.value === 'cooperation') {
+            form.action = cooperationEndpoint;
+          } else {
+            form.action = feedbackEndpoint; // Feedback aj Something Else pôjdu sem
+          }
+        });
+      </script>
 
       <div class="social-links">
         <a href="https://www.instagram.com/badkaediting/" target="_blank" rel="noopener noreferrer" class="social-link">
