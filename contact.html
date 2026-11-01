@@ -284,7 +284,6 @@
   </footer>
 
   <script>
-    // Prepínanie Formspree endpointu
     const form = document.getElementById('contactForm');
     const subjectSelect = document.getElementById('subject');
     const feedbackEndpoint = "https://formspree.io/f/mwllrjpd";
@@ -298,7 +297,6 @@
       }
     });
 
-    // Animácia rotujúcej 3D zemegule z bodiek
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -309,12 +307,14 @@
     window.addEventListener('resize', resize);
     resize();
 
+    // Vygenerovanie hustejšej a rovnomernejšej 3D sféry
     const globeDots = [];
-    const numDots = 160;
-    const radius = 190;
+    const numDots = 450; // Viac bodiek pre plnší vzhľad
+    const radius = 240;  // Väčší polomer, aby presahovala aj do bokov
 
     for (let i = 0; i < numDots; i++) {
-      const phi = Math.acos(-1 + (2 * i) / numDots);
+      const i_f = i + 0.5;
+      const phi = Math.acos(1 - (2 * i_f) / numDots);
       const theta = Math.sqrt(numDots * Math.PI) * phi;
       globeDots.push({
         x: radius * Math.cos(theta) * Math.sin(phi),
@@ -328,9 +328,9 @@
     function animateGlobe() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+      const centerY = canvas.height / 2 + 50; // Mierne posunuté nižšie za formulár
 
-      angle += 0.006;
+      angle += 0.004; // Plynulé otáčanie
 
       globeDots.forEach(dot => {
         const cos = Math.cos(angle);
@@ -338,15 +338,15 @@
         const xRot = dot.x * cos - dot.z * sin;
         const zRot = dot.z * cos + dot.x * sin;
 
-        const scale = 400 / (400 + zRot);
+        const scale = 500 / (500 + zRot);
         const x2d = xRot * scale + centerX;
         const y2d = dot.y * scale + centerY;
 
-        const alpha = (zRot + radius) / (2 * radius) * 0.7 + 0.1;
+        const alpha = (zRot + radius) / (2 * radius) * 0.6 + 0.15;
 
         ctx.fillStyle = `rgba(64, 224, 208, ${alpha})`;
         ctx.beginPath();
-        ctx.arc(x2d, y2d, scale * 2.2, 0, Math.PI * 2);
+        ctx.arc(x2d, y2d, scale * 2, 0, Math.PI * 2);
         ctx.fill();
       });
 
