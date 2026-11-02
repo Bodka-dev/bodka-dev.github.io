@@ -1,352 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BODKA | Game Dev & Tools Specialist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --bg-dark: #0a0c10;
-      --bg-card: #12161f;
-      --cyan-main: #40e0d0;
-      --cyan-glow: rgba(64, 224, 208, 0.4);
-      --text-main: #e6f1ff;
-      --text-muted: #8892b0;
-      --black: #000000;
-      --border: rgba(64, 224, 208, 0.2);
-    }
+    <meta charset="UTF-8">
+    <!-- 1. KĽÚČOVÉ: Viewport tag pre správne škálovanie na mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textures Creator v1.0</title>
+    <style>
+        /* Základný štýl */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Space Grotesk', sans-serif;
-    }
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color: #1f1f1f;
+            border-bottom: 1px solid #333;
+        }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      overflow-x: hidden;
-    }
+        /* Hlavný kontajner pre rozloženie stránky */
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-    #particles-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
+        /* Ľavý/Pravý panel s ovládacími prvkami */
+        .control-panel {
+            flex: 1;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      position: relative;
-      z-index: 1;
-    }
+        /* Stredná časť s náhľadom / plátnom */
+        .canvas-container {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
 
-    header {
-      padding: 2rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
+        /* Responzívne plátno */
+        canvas {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background-color: #000;
+            border-radius: 4px;
+        }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        button, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #6200ee;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-    .logo-circle {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: var(--cyan-main);
-      border: 3px solid var(--black);
-      outline: 2px solid var(--cyan-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--black);
-      box-shadow: 0 0 15px var(--cyan-glow);
-    }
+        button:hover {
+            background-color: #7b1fa2;
+        }
 
-    .logo-text {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--text-main);
-    }
+        /* 2. KĽÚČOVÉ: Media Query pre mobily (obrazovky užšie ako 768px) */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column; /* Zmení vedľajšie stĺpce na usporiadanie pod sebou */
+                padding: 10px;
+                gap: 10px;
+            }
 
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      margin-left: 2rem;
-      transition: color 0.3s;
-      font-weight: 600;
-    }
+            .control-panel, .canvas-container {
+                width: 100%;
+            }
 
-    nav a:hover, nav a.active {
-      color: var(--cyan-main);
-    }
-
-    .hero {
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 4rem 0;
-    }
-
-    .badge {
-      background: rgba(64, 224, 208, 0.1);
-      color: var(--cyan-main);
-      border: 1px solid var(--cyan-main);
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-      display: inline-block;
-    }
-
-    h1 {
-      font-size: 4rem;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 span {
-      color: var(--cyan-main);
-      text-shadow: 0 0 20px var(--cyan-glow);
-    }
-
-    .hero-desc {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      max-width: 650px;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-    }
-
-    .cta-container {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .btn-large {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--cyan-main);
-      color: var(--black);
-      padding: 1.2rem 2.5rem;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 25px var(--cyan-glow);
-    }
-
-    .btn-large:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 0 40px var(--cyan-main);
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 4rem 0;
-    }
-
-    .skill-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.8rem;
-      transition: all 0.3s ease;
-    }
-
-    .skill-card:hover {
-      border-color: var(--cyan-main);
-      transform: translateY(-5px);
-    }
-
-    .skill-icon {
-      font-size: 2.5rem;
-      color: var(--cyan-main);
-      margin-bottom: 1rem;
-    }
-
-    .skill-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .skill-card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    .contact-section {
-      padding: 5rem 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .contact-btn-main {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--cyan-main);
-      color: var(--black);
-      padding: 1.2rem 3rem;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      text-decoration: none;
-      box-shadow: 0 0 20px var(--cyan-glow);
-      transition: all 0.3s ease;
-      margin-top: 2rem;
-    }
-
-    .contact-btn-main:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 30px var(--cyan-main);
-    }
-
-    footer {
-      padding: 2rem 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-  </style>
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="particles-canvas"></canvas>
 
-  <div class="container">
     <header>
-      <div class="logo-container">
-        <div class="logo-circle">B</div>
-        <div class="logo-text">BODKA</div>
-      </div>
-      <nav>
-        <a href="index.html" class="active">Home</a>
-        <a href="products.html">Products & Tools</a>
-        <a href="contact.html">Contact Me</a>
-      </nav>
+        <h1>Textures Creator v1.0</h1>
+        <p>Fast procedural game textures generator</p>
     </header>
 
-    <section class="hero">
-      <div class="badge">Independent Game & Tool Developer</div>
-      <h1>Accelerating <span>Game Development</span> Workflows</h1>
-      <p class="hero-desc">
-        I create games and engineer high-performance development tools designed for Unity, Unreal Engine, and VS Code. My mission is to streamline complex mechanics, speed up repetitive tasks, and eliminate workflow bottlenecks.
-      </p>
+    <div class="main-container">
+        <!-- Ovládacie prvky -->
+        <div class="control-panel">
+            <h3>Settings</h3>
+            <p style="margin-top: 10px; color: #aaa;">Configure your texture parameters here:</p>
+            <select>
+                <option>Preset: Stone Wall</option>
+                <option>Preset: Wood Bark</option>
+                <option>Preset: Metal Rust</option>
+            </select>
+            <button>Generate Texture</button>
+        </div>
 
-      <div class="cta-container">
-        <a href="products.html" class="btn-large">
-          <i class="fa-solid fa-rocket"></i> Browse Game Dev Tools
-        </a>
-      </div>
-    </section>
-
-    <h2 style="font-size: 2rem; margin-top: 2rem;">Core Expertise</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <i class="fa-brands fa-unity skill-icon"></i>
-        <h3>Unity Engine</h3>
-        <p>Custom C# scripting, editor extensions, state machines, and optimization tools built to shorten iteration cycles.</p>
-      </div>
-
-      <div class="skill-card">
-        <i class="fa-solid fa-gamepad skill-icon"></i>
-        <h3>Unreal Engine</h3>
-        <p>Blueprint modules and C++ utilities focusing on system architecture, player movement, and camera control.</p>
-      </div>
-
-      <div class="skill-card">
-        <i class="fa-solid fa-code skill-icon"></i>
-        <h3>VS Code & Tooling</h3>
-        <p>Custom automation scripts, snippets, and productivity tools that integrate cleanly into your editor workspace.</p>
-      </div>
+        <!-- Plátno / Náhľad -->
+        <div class="canvas-container">
+            <h3>Preview</h3>
+            <canvas id="textureCanvas" width="512" height="512"></canvas>
+        </div>
     </div>
 
-    <section class="contact-section">
-      <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Get In Touch</h2>
-      <p style="color: var(--text-muted); font-size: 1.1rem;">Have questions or need custom game dev solutions?</p>
-      
-      <a href="contact.html" class="contact-btn-main">
-        <i class="fa-solid fa-paper-plane"></i> Contact Me
-      </a>
-    </section>
-
-    <footer>
-      <p>&copy; 2026 BODKA. Built for GitHub Pages.</p>
-    </footer>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
-      draw() {
-        ctx.fillStyle = 'rgba(64, 224, 208, 0.3)';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 60; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
 </body>
 </html>
